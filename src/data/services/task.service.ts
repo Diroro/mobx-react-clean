@@ -1,10 +1,37 @@
 import { Task, TaskId } from "../../domain/models/task.model";
 import { TaskService } from "../../domain/ports/services/task-service.port";
-import { createTask, TaskDTO } from "../api-models/task.api-model";
+import { createTask, TaskApiModel } from "../api-models/task.api-model";
 import {v4 as uuidv4} from 'uuid';
 import { injectable } from "inversify";
 
-let tasksList: TaskDTO[] = [];
+let tasksList: TaskApiModel[] = [
+    
+      {
+        title: 'React Hooks',
+        completed: false,
+        id: 'b967afe24b23'
+      },
+      {
+        title: 'Viva la comunidad de Midu ORALE',
+        completed: true,
+        id: '43286487fhsdjasd'
+      },
+      {
+        title: 'Hooooola Twitch!',
+        completed: false,
+        id: '54937fhajd'
+      },
+      {
+        title: 'Context',
+        completed: true,
+        id: '43242341aaaaa'
+      },
+      {
+        title: 'BUA BUA BUA BUA',
+        completed: true,
+        id: 'b967afe24a13'
+      }
+];
 
 @injectable()
 export class TaskServiceImpl implements TaskService {
@@ -15,7 +42,7 @@ export class TaskServiceImpl implements TaskService {
     addTask =  async (title: string): Promise<Task> => {
         const id = uuidv4();
 
-        const newTask: TaskDTO = {
+        const newTask: TaskApiModel = {
             id,
             title,
             completed: false,

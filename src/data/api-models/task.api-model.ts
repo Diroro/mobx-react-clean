@@ -1,13 +1,13 @@
 import { Task } from "../../domain/models/task.model";
 
-// @TODO rename the file... think how to call
-export interface TaskDTO {
+// @TODO think how to call
+export interface TaskApiModel {
     id: string;
     title: string;
     completed: boolean;
 }
 
-export const createTask = (rawTask: TaskDTO): Task => {
+export const createTask = (rawTask: TaskApiModel): Task => {
     return {
         ...rawTask,
     }

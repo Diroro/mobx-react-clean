@@ -1,6 +1,8 @@
 import { injectable } from "inversify";
+import { makeAutoObservable } from "mobx";
 import { Task, TaskId } from "../../domain/models/task.model";
 import { TaskStore } from "../../domain/ports/stores/task-store.port";
+
 
 @injectable()
 export class TaskStoreImpl implements TaskStore {
@@ -8,9 +10,17 @@ export class TaskStoreImpl implements TaskStore {
     tasksMap: Map<TaskId, Task> = new Map();
     isLoading: boolean = false;
 
+    constructor() {
+        makeAutoObservable(this);
+    }
     saveTask = (task: Task) => {
         this.tasksMap.set(task.id, task);
     };
+    
+    addTask = (task: Task) => {
+        this.tasksMap.set(task.id, task);
+        this.taskIds.push(task.id);
+    }
 
     saveTasksList = (tasks: Task[]) => {
         tasks.forEach(task => {
