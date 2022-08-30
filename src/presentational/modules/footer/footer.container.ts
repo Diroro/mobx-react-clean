@@ -4,6 +4,7 @@ import { useTaskManagerFeature } from '../../../DI/use-feature';
 import { observer } from 'mobx-react';
 import { withFeature } from '../../../DI/with-feature';
 
+// so it can be used either with simpler 'useFeature' or 'withFeature' hook
 export const FooterContainerExample = observer(() => {
 	const tasksFeature = useTaskManagerFeature();
 

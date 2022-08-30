@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
 import { Task, TaskId } from "../../domain/models/task.model";
-import { TaskStore } from "../../domain/ports/stores/task-store.port";
+import { TaskStore } from "../../domain/feature-dependencies/stores/task-store.dependency";
 
 
 @injectable()

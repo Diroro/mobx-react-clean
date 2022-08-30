@@ -1,5 +1,5 @@
 import { Task, TaskId } from "../../domain/models/task.model";
-import { TaskService } from "../../domain/ports/services/task-service.port";
+import { TaskService } from "../../domain/feature-dependencies/services/task.service.depenceny";
 import { createTask, TaskApiModel } from "../api-models/task.api-model";
 import {v4 as uuidv4} from 'uuid';
 import { injectable } from "inversify";

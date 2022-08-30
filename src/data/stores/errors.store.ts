@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
-import { ErrorsStore } from "../../domain/ports/stores/errors-store.port";
+import { ErrorsStore } from "../../domain/feature-dependencies/stores/errors-store.dependency";
 
 @injectable()
 export class ErrorsStoreImpl implements ErrorsStore {

@@ -1,6 +1,6 @@
-import { TaskService } from "../ports/services/task-service.port";
-import { ErrorsStore } from "../ports/stores/errors-store.port";
-import { TaskStore } from "../ports/stores/task-store.port";
+import { TaskService } from "../feature-dependencies/services/task.service.depenceny";
+import { ErrorsStore } from "../feature-dependencies/stores/errors-store.dependency";
+import { TaskStore } from "../feature-dependencies/stores/task-store.dependency";
 import { TaskManagerFeatureImpl } from "./task-manager.feature";
 
 const taskStoreMock = {} as TaskStore;

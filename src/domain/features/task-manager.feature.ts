@@ -1,12 +1,11 @@
-import "reflect-metadata"; 
 import { inject, injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
 import { DependencyToken } from "../../DI/di-container";
 import { isNonNullable } from "../../utils/non-nullable.utils";
 import { Task, TaskId } from "../models/task.model";
-import { TaskService } from "../ports/services/task-service.port";
-import { ErrorsStore } from "../ports/stores/errors-store.port";
-import { TaskStore } from "../ports/stores/task-store.port";
+import { type TaskService } from "../feature-dependencies/services/task.service.depenceny";
+import { type ErrorsStore } from "../feature-dependencies/stores/errors-store.dependency";
+import { type TaskStore } from "../feature-dependencies/stores/task-store.dependency";
 
 export interface TaskManagerFeature {
     tasksList: Task[];
@@ -52,10 +51,7 @@ export class TaskManagerFeatureImpl implements TaskManagerFeature {
         return this.tasksList.filter((task) => task.completed).length;
     }
 
-  
-
     requestTasks = () => {
-        console.log('REQUEST TASKS');
         this.taskService.getTasks()
             .then(this.tasksStore.saveTasksList)
             .catch(this.errorsStore.handleError('get-tasks'));
