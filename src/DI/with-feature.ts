@@ -44,8 +44,8 @@ DistributiveOmit<
  */
 
   // Injects props and removes them from the prop requirements.
-  // Will not pass through the injected props if they are passed in during
-  // render. Also adds new prop requirements from TNeedsProps.
+  // Will not pass through the injected props if they are passed in during render.
+  // Also adds new prop requirements from TNeedsProps.
   // Uses distributive omit to preserve discriminated unions part of original prop type
   export type InferableComponentEnhancerWithProps<TInjectedProps, TNeedsProps> = <
     C extends ComponentType<Matching<TInjectedProps, GetProps<C>>>

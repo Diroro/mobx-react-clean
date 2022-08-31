@@ -2,6 +2,7 @@
   "name": "mobx-react-clean",
   "version": "0.1.0",
   "private": true,
+  "author": "Dmitry Rogach",
   "dependencies": {
     "inversify": "6.0.1",
     "mobx": "6.5.0",

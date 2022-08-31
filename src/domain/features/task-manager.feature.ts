@@ -6,10 +6,12 @@ import { Task, TaskId } from "../models/task.model";
 import { type TaskService } from "../feature-dependencies/services/task.service.depenceny";
 import { type ErrorsStore } from "../feature-dependencies/stores/errors-store.dependency";
 import { type TaskStore } from "../feature-dependencies/stores/task-store.dependency";
+import { Cancellable, handleRequest } from "../../utils/handle-request.utils";
 
 export interface TaskManagerFeature {
     tasksList: Task[];
     requestTasks: () => void;
+    requestTasksCancellable: () => Cancellable;
     addTask: (title: string) => void;
     removeTask: (id: TaskId) => void;
     renameTask: (id: TaskId, newTitle: string) => void;
@@ -20,6 +22,12 @@ export interface TaskManagerFeature {
 
 @injectable()
 export class TaskManagerFeatureImpl implements TaskManagerFeature {
+    tasksLoading: boolean = false;
+
+    private setTasksLoading = (flag: boolean) => {
+        this.tasksLoading = flag;
+    }
+
     constructor(
         @inject(DependencyToken.TaskService) private taskService: TaskService, 
         @inject(DependencyToken.TasksStore) private tasksStore: TaskStore,
@@ -51,10 +59,16 @@ export class TaskManagerFeatureImpl implements TaskManagerFeature {
         return this.tasksList.filter((task) => task.completed).length;
     }
 
-    requestTasks = () => {
+    requestTasks = (): void => {
+        this.setTasksLoading(true);
         this.taskService.getTasks()
             .then(this.tasksStore.saveTasksList)
-            .catch(this.errorsStore.handleError('get-tasks'));
+            .catch(this.errorsStore.handleError('get-tasks'))
+            .finally(() => this.setTasksLoading(false));
+    };
+
+    requestTasksCancellable = (): Cancellable => {
+        return handleRequest(this.taskService.getTasks, {}, this.tasksStore.saveTasksList, this.setTasksLoading, this.errorsStore.handleError('get-tasks'));
     };
  
     addTask = (title: string) => {

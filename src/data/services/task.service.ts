@@ -3,8 +3,9 @@ import { TaskService } from "../../domain/feature-dependencies/services/task.ser
 import { createTask, TaskApiModel } from "../api-models/task.api-model";
 import {v4 as uuidv4} from 'uuid';
 import { injectable } from "inversify";
+import { type ApiClient } from "./api.client";
 
-let tasksList: TaskApiModel[] = [
+let mockTasksList: TaskApiModel[] = [
     
       {
         title: 'React Hooks',
@@ -35,8 +36,12 @@ let tasksList: TaskApiModel[] = [
 
 @injectable()
 export class TaskServiceImpl implements TaskService {
-    getTasks = async () => {
-        return tasksList;
+  // constructor(private apiClient: ApiClient) {}
+  // constructor(private externalApiClient: ApiClient) {}
+  // constructor(private graphqlClient: GraphqlClient) {}
+
+    getTasks = async (): Promise<Task[]> => {
+        return mockTasksList.map(createTask);
     }
 
     addTask =  async (title: string): Promise<Task> => {
@@ -47,18 +52,18 @@ export class TaskServiceImpl implements TaskService {
             title,
             completed: false,
         };
-        tasksList.push(newTask);
+        mockTasksList.push(newTask);
 
         return createTask(newTask);
     };
 
     removeTask = async (id: TaskId): Promise<TaskId> => {
-        tasksList = tasksList.filter(task => task.id !== id);
+        mockTasksList = mockTasksList.filter(task => task.id !== id);
         return id;
     }
 
     toggleCompleteTask = async (id: TaskId, completed: boolean): Promise<Task> => {
-        const foundTask = tasksList.find(task => task.id === id);
+        const foundTask = mockTasksList.find(task => task.id === id);
 
         if (foundTask) {
             foundTask.completed = completed;
@@ -68,13 +73,13 @@ export class TaskServiceImpl implements TaskService {
     }
 
    editTaskTitle = async (id: string, newTitle: string): Promise<Task> => {
-        const index = tasksList.findIndex(task => task.id === id);
+        const index = mockTasksList.findIndex(task => task.id === id);
 
         if (index === -1) {
             throw new Error('Task not found');
         }
 
-        const task = tasksList[index];
+        const task = mockTasksList[index];
         task.title = newTitle;
         return createTask(task);
     }
