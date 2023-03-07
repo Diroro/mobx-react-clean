@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { TasksStyled } from './tasks.styled';
 import { TaskContainer } from '../task/task.container';
-import { Task } from '../../../domain/models/task.model';
+import { type Task } from '../../../domain/models/task.model';
 import { observer } from 'mobx-react';
 
 export interface TasksProps {

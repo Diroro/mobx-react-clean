@@ -1,4 +1,5 @@
-import { Task } from "../../domain/models/task.model";
+import { makeObservable, observable } from "mobx";
+import { type Task } from "../../domain/models/task.model";
 
 // @TODO think how to call
 export interface TaskApiModel {
@@ -9,7 +10,7 @@ export interface TaskApiModel {
 
 export const createTask = (rawTask: TaskApiModel): Task => {
     // creating dates, 
-    return {
+    return observable({
         ...rawTask,
-    }
-}
+    });
+};

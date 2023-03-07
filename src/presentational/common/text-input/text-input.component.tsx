@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import { FormEventHandler, KeyboardEventHandler, useCallback } from 'react'
+import { type FormEventHandler,type  KeyboardEventHandler, useCallback } from 'react'
 import styled from 'styled-components'
 
 const TextInputStyled = styled.input`

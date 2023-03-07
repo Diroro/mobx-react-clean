@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
-import { Task, TaskId } from "../../domain/models/task.model";
-import { TaskStore } from "../../domain/feature-dependencies/stores/task-store.dependency";
+import type { Task, TaskId } from "../../domain/models/task.model";
+import { type TaskStore } from "../../domain/feature-dependencies/stores/task-store.dependency";
 
 
 @injectable()
@@ -11,7 +11,7 @@ export class TaskStoreImpl implements TaskStore {
     isLoading: boolean = false;
 
     constructor() {
-        makeAutoObservable(this);
+        // makeAutoObservable(this);
     }
     saveTask = (task: Task) => {
         this.tasksMap.set(task.id, task);

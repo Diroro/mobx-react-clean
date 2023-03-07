@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import { useCallback } from 'react';
-import { Task } from '../../../domain/models/task.model';
+import { type Task } from '../../../domain/models/task.model';
 import { DestroyStyled, TaskStyled, ToggleLabelStyled, ToggleStyled, ViewStyled } from './task.styled';
 
 export interface TaskProps {
@@ -11,7 +11,7 @@ export interface TaskProps {
 
 export const TaskComponent = observer((props: TaskProps) => {
 	const { onCheck, task, onDelete } = props;
-	const {id, completed, title} = task;
+	const { id, completed, title } = task;
 
 	const isInEditMode = false;
 	const onEditModeEnter = () => {}
@@ -29,3 +29,8 @@ export const TaskComponent = observer((props: TaskProps) => {
 		</TaskStyled>
 	);
 });
+
+interface Props {
+	
+}
+const Toggle = observer(({...props}) => <ToggleStyled {...props} />);

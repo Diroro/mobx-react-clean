@@ -1,12 +1,13 @@
 import { Footer } from './footer.component';
 import { createElement } from 'react';
-import { useTaskManagerFeature } from '../../../DI/use-feature';
+// import { useTaskManagerFeature } from '../../../DI/use-feature';
 import { observer } from 'mobx-react';
-import { withFeature } from '../../../DI/with-feature';
+import { useDIFeature } from '../../../DI/di-container';
+// import { withFeature } from '../../../DI/with-feature';
 
 // so it can be used either with simpler 'useFeature' or 'withFeature' hook
-export const FooterContainerExample = observer(() => {
-	const tasksFeature = useTaskManagerFeature();
+export const FooterContainer = observer(() => {
+	const tasksFeature = useDIFeature('TaskManagerFeature');
 
 	return createElement(Footer, {
 		activeCount: tasksFeature.activeCount,
@@ -14,7 +15,7 @@ export const FooterContainerExample = observer(() => {
 	});
 });
 
-export const FooterContainer = withFeature(({TaskManager}) => ({
-	activeCount: TaskManager.activeCount,
-	completedCount: TaskManager.completedCount,
-}))(Footer);
+// export const FooterContainerExample = withFeature(({TaskManager}) => ({
+// 	activeCount: TaskManager.activeCount,
+// 	completedCount: TaskManager.completedCount,
+// }))(Footer);

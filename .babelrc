@@ -3,6 +3,8 @@
       "next/babel"
     ],
     "plugins": [
-      "transform-decorators-legacy"
+      "transform-decorators-legacy",
+      "babel-plugin-transform-typescript-metadata",
+      "babel-plugin-parameter-decorator"
     ]
   }

@@ -1,7 +1,7 @@
 import {useCallback, useEffect} from 'react';
 import { useTaskManagerFeature } from '../../DI/use-feature';
-import {Cancellable} from '../handle-request.utils';
-
+import { type Cancellable} from '../handle-request.utils';
+ 
 type CancellableRequest = () => Cancellable;
 
 /**

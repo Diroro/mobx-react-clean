@@ -1,12 +1,16 @@
 import { inject, injectable } from "inversify";
-import { makeAutoObservable } from "mobx";
-import { DependencyToken } from "../../DI/di-container";
+// import { makeAutoObservable } from "mobx";
+import { DependencyToken } from "../../DI/tokens";
 import { isNonNullable } from "../../utils/non-nullable.utils";
-import { Task, TaskId } from "../models/task.model";
-import { type TaskService } from "../feature-dependencies/services/task.service.depenceny";
+import { type Task, type TaskId } from "../models/task.model";
+import { type TaskService } from "../feature-dependencies/services/task.service.dependency";
 import { type ErrorsStore } from "../feature-dependencies/stores/errors-store.dependency";
 import { type TaskStore } from "../feature-dependencies/stores/task-store.dependency";
-import { Cancellable, handleRequest } from "../../utils/handle-request.utils";
+import { type Cancellable, handleRequest } from "../../utils/handle-request.utils";
+import { makeAutoObservable } from "mobx";
+import { TaskServiceImpl } from "../../data/services/task.service";
+import { ErrorsStoreImpl } from "../../data/stores/errors.store";
+import { TaskStoreImpl } from "../../data/stores/task.store";
 
 export interface TaskManagerFeature {
     tasksList: Task[];
@@ -26,34 +30,30 @@ export class TaskManagerFeatureImpl implements TaskManagerFeature {
 
     private setTasksLoading = (flag: boolean) => {
         this.tasksLoading = flag;
-    }
+    } 
 
-    constructor(
-        @inject(DependencyToken.TaskService) private taskService: TaskService, 
-        @inject(DependencyToken.TasksStore) private tasksStore: TaskStore,
-        @inject(DependencyToken.ErrorsStore) private errorsStore: ErrorsStore
-    ) {
-        makeAutoObservable(this);
-    }
+    @inject(DependencyToken.TaskService) private taskService!: TaskService;
+    @inject(DependencyToken.TaskStore) private taskStore!: TaskStore;
+    @inject(DependencyToken.ErrorsStore) private errorsStore!: ErrorsStore;
     
     get tasksList() {
-        return this.tasksStore.taskIds
-            .map(id => this.tasksStore.tasksMap.get(id))
+        console.log('TASK STORE: ', this.taskStore)
+        return this.taskStore.taskIds
+            .map(id => this.taskStore.tasksMap.get(id))
             .filter(isNonNullable);
     };
  
     saveTask = (task: Task) => {
-        this.tasksStore.saveTask(task);
+        this.taskStore.saveTask(task);
     }
 
     setLoading = (flag: boolean) => {
-        this.tasksStore.isLoading = flag;
+        this.taskStore.isLoading = flag;
     }
 
     get activeCount() {
-       return  this.tasksList.filter((task) => !task.completed).length
+       return this.tasksList.filter((task) => !task.completed).length
     }
-
 
     get completedCount() {
         return this.tasksList.filter((task) => task.completed).length;
@@ -62,40 +62,43 @@ export class TaskManagerFeatureImpl implements TaskManagerFeature {
     requestTasks = (): void => {
         this.setTasksLoading(true);
         this.taskService.getTasks()
-            .then(this.tasksStore.saveTasksList)
+            .then(this.taskStore.saveTasksList)
             .catch(this.errorsStore.handleError('get-tasks'))
             .finally(() => this.setTasksLoading(false));
     };
 
     requestTasksCancellable = (): Cancellable => {
-        return handleRequest(this.taskService.getTasks, {}, this.tasksStore.saveTasksList, this.setTasksLoading, this.errorsStore.handleError('get-tasks'));
+        return handleRequest(
+            this.taskService.getTasks,
+            {}, 
+            this.taskStore.saveTasksList,
+            this.setTasksLoading,
+            this.errorsStore.handleError('get-tasks')
+        );
     };
  
     addTask = (title: string) => {
+        console.log('ADD TASK: ', title);
         this.taskService.addTask(title)
-            .then(this.tasksStore.addTask)
+            .then(this.taskStore.addTask)
             .catch(this.errorsStore.handleError('add-task'))
     }
-
    
     removeTask = (id: TaskId) => {
         this.taskService.removeTask(id)
-            .then(this.tasksStore.removeTask)
+            .then(this.taskStore.removeTask)
             .catch(this.errorsStore.handleError('add-task'))
     }
 
     renameTask = (id: TaskId, newTitle: string) => {
         this.taskService.editTaskTitle(id, newTitle)
-            .then(this.tasksStore.saveTask)
+            .then(this.taskStore.saveTask)
             .catch(this.errorsStore.handleError('rename-task'))
     }
 
     toggleCompleteTask = (id: TaskId, completed: boolean) => {
         this.taskService.toggleCompleteTask(id, completed)
-            .then(this.tasksStore.saveTask)
+            .then(this.taskStore.saveTask)
             .catch(this.errorsStore.handleError('complete-task'))
     }
-
-
-
 }

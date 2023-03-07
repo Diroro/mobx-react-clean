@@ -1,4 +1,4 @@
-import { KeyboardEventHandler, useCallback, useState } from 'react';
+import { type KeyboardEventHandler, useCallback, useState } from 'react';
 import { HeadingStyled } from './header.styled';
 import { observer } from 'mobx-react';
 import { TextInput } from '../../common/text-input/text-input.component';

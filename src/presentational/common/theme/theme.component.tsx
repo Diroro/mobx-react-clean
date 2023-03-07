@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { memo, ReactNode } from 'react';
+import React, { memo, type ReactNode } from 'react';
 import { ThemeStyled } from './theme.styled';
 
 export interface ThemeProps {
