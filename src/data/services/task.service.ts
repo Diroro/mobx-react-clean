@@ -2,8 +2,9 @@ import type { Task, TaskId } from "../../domain/models/task.model";
 import {type  TaskService } from "../../domain/feature-dependencies/services/task.service.dependency";
 import { createTask, type TaskApiModel } from "../api-models/task.api-model";
 import {v4 as uuidv4} from 'uuid';
-import { injectable } from "inversify";
 import { type ApiClient } from "./api.client";
+import { MakeInjectable } from "../../DI/my-di/decorators";
+import { DependencyToken } from "../../DI/tokens";
 
 let mockTasksList: TaskApiModel[] = [
     
@@ -34,7 +35,7 @@ let mockTasksList: TaskApiModel[] = [
       }
 ];
 
-@injectable()
+@MakeInjectable(DependencyToken.TaskService)
 export class TaskServiceImpl implements TaskService {
   // constructor(private apiClient: ApiClient) {}
   // constructor(private externalApiClient: ApiClient) {}

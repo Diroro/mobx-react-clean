@@ -1,10 +1,11 @@
-import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
 import type { Task, TaskId } from "../../domain/models/task.model";
 import { type TaskStore } from "../../domain/feature-dependencies/stores/task-store.dependency";
+import { MakeInjectable } from "../../DI/my-di/decorators";
+import { DependencyToken } from "../../DI/tokens";
 
 
-@injectable()
+@MakeInjectable(DependencyToken.TaskStore)
 export class TaskStoreImpl implements TaskStore {
     taskIds: TaskId[] = [];
     tasksMap: Map<TaskId, Task> = new Map();

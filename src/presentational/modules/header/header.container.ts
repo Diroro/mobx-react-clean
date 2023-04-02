@@ -11,6 +11,6 @@ export const HeaderContainer = observer(() => {
 	return createElement(HeaderComponent, {addTask});
 });
 
-export const HeaderContainerExample = withFeature((features) => ({addTask: features.TaskManager.addTask}))(HeaderComponent);
+export const HeaderContainerExample = withFeature((features) => ({addTask: features.TaskManagerFeature.addTask}))(HeaderComponent);
 
 

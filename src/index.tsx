@@ -1,20 +1,15 @@
-import "reflect-metadata"; 
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { AppComponent } from "./presentational/modules/app/app.component";
-import { registerContainer } from "./DI/experiments/classes-di-container";
+import "reflect-metadata"; 
+
 // import { app } from "./DI/di-container";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-// app.runContainer();
-
-// export const DependencyToken = app.DependencyToken;
-
-registerContainer();
 
 root.render(
     <AppComponent />

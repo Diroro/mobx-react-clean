@@ -4,7 +4,6 @@
   "private": true,
   "author": "Dmitry Rogach",
   "dependencies": {
-    "inversify": "6.0.1",
     "mobx": "6.5.0",
     "mobx-react": "7.4.0",
     "normalize.css": "8.0.1",
@@ -17,6 +16,9 @@
     "web-vitals": "2.1.4"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.21.0",
+    "@babel/preset-typescript": "^7.21.4",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "13.2.0",
     "@testing-library/user-event": "14.1.1",
@@ -29,6 +31,10 @@
     "babel-plugin-parameter-decorator": "^1.0.16",
     "babel-plugin-transform-decorators-legacy": "1.3.5",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.7",
+    "prettier-config": "^1.0.0",
     "typescript": "4.6.4"
   },
   "scripts": {
@@ -36,12 +42,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -53,6 +53,12 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
     ]
   }
 }

@@ -1,4 +1,4 @@
-import { inject, injectable } from "inversify";
+// import { inject, injectable } from "inversify";
 // import { makeAutoObservable } from "mobx";
 import { DependencyToken } from "../../DI/tokens";
 import { isNonNullable } from "../../utils/non-nullable.utils";
@@ -7,10 +7,11 @@ import { type TaskService } from "../feature-dependencies/services/task.service.
 import { type ErrorsStore } from "../feature-dependencies/stores/errors-store.dependency";
 import { type TaskStore } from "../feature-dependencies/stores/task-store.dependency";
 import { type Cancellable, handleRequest } from "../../utils/handle-request.utils";
-import { makeAutoObservable } from "mobx";
-import { TaskServiceImpl } from "../../data/services/task.service";
-import { ErrorsStoreImpl } from "../../data/stores/errors.store";
-import { TaskStoreImpl } from "../../data/stores/task.store";
+// import { makeAutoObservable } from "mobx";
+// import { TaskServiceImpl } from "../../data/services/task.service";
+// import { ErrorsStoreImpl } from "../../data/stores/errors.store";
+// import { TaskStoreImpl } from "../../data/stores/task.store";
+import { Inject, MakeInjectable } from "../../DI/my-di/decorators";
 
 export interface TaskManagerFeature {
     tasksList: Task[];
@@ -24,18 +25,22 @@ export interface TaskManagerFeature {
     completedCount: number;
 }
 
-@injectable()
+@MakeInjectable(DependencyToken.TaskManagerFeature)
 export class TaskManagerFeatureImpl implements TaskManagerFeature {
     tasksLoading: boolean = false;
 
     private setTasksLoading = (flag: boolean) => {
         this.tasksLoading = flag;
     } 
-
-    @inject(DependencyToken.TaskService) private taskService!: TaskService;
-    @inject(DependencyToken.TaskStore) private taskStore!: TaskStore;
-    @inject(DependencyToken.ErrorsStore) private errorsStore!: ErrorsStore;
     
+    constructor(
+    @Inject("TaskService") public taskService: TaskService,
+    @Inject("TaskStore") public taskStore: TaskStore,
+    @Inject("ErrorsStore") public errorsStore: ErrorsStore,
+    ) {
+        console.log('TASK SERVICE: ', taskService);
+    }
+
     get tasksList() {
         console.log('TASK STORE: ', this.taskStore)
         return this.taskStore.taskIds

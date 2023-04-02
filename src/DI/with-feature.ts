@@ -1,12 +1,11 @@
-import { type AppFeatures, useAllFeatures } from "./use-feature";
+// import { type AppFeatures } from "./use-feature";
 import { type ClassAttributes, createElement, type ComponentClass, type ComponentType } from "react";
 import { observer } from "mobx-react";
-import { useDIFeature } from "./di-container";
+import { useAllFeatures } from "./di-container";
 
 
-const useAllDiFeatures = () => {
- 
-}
+type AppFeatures = ReturnType<typeof useAllFeatures>
+
 /**
  * The HOC allows to pass a selector which getting parameters and methods from features
  * so these values would be passed to components.
@@ -20,7 +19,6 @@ export const withFeature = <FeatureProps, OwnProps>(selector: Selector<FeaturePr
             const features = useAllFeatures();
             // const 
 
-            const 
             const selectedProps = selector(features, ownProps);
             const allProps = {...ownProps, ...selectedProps} as any;
             return createElement(Component, allProps);
