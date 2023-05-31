@@ -1,4 +1,4 @@
-import { DIResolver, DIResolverWithKeysChecker, resolveDI } from './di-resolver'
+import { DIResolverWithKeysChecker } from './di-resolver-with-key-checker'
 
 type Klass<Interface = any> = new (...args: any[]) => Interface
 

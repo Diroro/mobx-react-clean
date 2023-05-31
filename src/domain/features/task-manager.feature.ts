@@ -1,17 +1,11 @@
-// import { inject, injectable } from "inversify";
-// import { makeAutoObservable } from "mobx";
-import { DependencyToken } from "../../DI/tokens";
+import { Token } from "../../DI/tokens";
 import { isNonNullable } from "../../utils/non-nullable.utils";
 import { type Task, type TaskId } from "../models/task.model";
 import { type TaskService } from "../feature-dependencies/services/task.service.dependency";
 import { type ErrorsStore } from "../feature-dependencies/stores/errors-store.dependency";
 import { type TaskStore } from "../feature-dependencies/stores/task-store.dependency";
 import { type Cancellable, handleRequest } from "../../utils/handle-request.utils";
-// import { makeAutoObservable } from "mobx";
-// import { TaskServiceImpl } from "../../data/services/task.service";
-// import { ErrorsStoreImpl } from "../../data/stores/errors.store";
-// import { TaskStoreImpl } from "../../data/stores/task.store";
-import { Inject, MakeInjectable } from "../../DI/my-di/decorators";
+import { Injectable, Inject } from "../../DI/my-di/decorators";
 
 export interface TaskManagerFeature {
     tasksList: Task[];
@@ -25,7 +19,7 @@ export interface TaskManagerFeature {
     completedCount: number;
 }
 
-@MakeInjectable(DependencyToken.TaskManagerFeature)
+@Injectable(Token.taskManagerFeature)
 export class TaskManagerFeatureImpl implements TaskManagerFeature {
     tasksLoading: boolean = false;
 
@@ -34,15 +28,13 @@ export class TaskManagerFeatureImpl implements TaskManagerFeature {
     } 
     
     constructor(
-    @Inject("TaskService") public taskService: TaskService,
-    @Inject("TaskStore") public taskStore: TaskStore,
-    @Inject("ErrorsStore") public errorsStore: ErrorsStore,
+        @Inject(Token.taskService) public taskService: TaskService,
+        @Inject(Token.taskStore) public taskStore: TaskStore,
+        @Inject(Token.errorsStore) public errorsStore: ErrorsStore,
     ) {
-        console.log('TASK SERVICE: ', taskService);
     }
 
     get tasksList() {
-        console.log('TASK STORE: ', this.taskStore)
         return this.taskStore.taskIds
             .map(id => this.taskStore.tasksMap.get(id))
             .filter(isNonNullable);

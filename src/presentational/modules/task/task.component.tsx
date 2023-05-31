@@ -29,8 +29,3 @@ export const TaskComponent = observer((props: TaskProps) => {
 		</TaskStyled>
 	);
 });
-
-interface Props {
-	
-}
-const Toggle = observer(({...props}) => <ToggleStyled {...props} />);

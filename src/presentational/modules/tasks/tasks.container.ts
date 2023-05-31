@@ -1,14 +1,11 @@
 import { TasksList } from './tasks.component';
-// import { withFeature } from '../../../DI/with-feature';
 import { observer } from 'mobx-react';
-// import { useAllFeatures } from '../../../DI/use-feature';
 import { createElement } from 'react';
-import { useDIFeature } from '../../../DI/di-container';
-import { DependencyToken } from '../../../DI/tokens';
-// import { useDIFeature } from '../../../DI/di-container';
+import { useDIFeature } from '../../../DI/use-feature';
+import { Token } from '../../../DI/tokens';
 
 export const TasksContainer = observer(() => {
-	const TaskManager = useDIFeature(DependencyToken.TaskManagerFeature);
+	const TaskManager = useDIFeature(Token.taskManagerFeature);
 
 	return createElement(TasksList, {
 		tasks: TaskManager.tasksList,

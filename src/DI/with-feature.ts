@@ -1,7 +1,8 @@
 // import { type AppFeatures } from "./use-feature";
 import { type ClassAttributes, createElement, type ComponentClass, type ComponentType } from "react";
 import { observer } from "mobx-react";
-import { useAllFeatures } from "./di-container";
+import { useAllFeatures } from "./use-feature";
+// import { useAllFeatures } from "./di-container";
 
 
 type AppFeatures = ReturnType<typeof useAllFeatures>
@@ -17,11 +18,12 @@ export const withFeature = <FeatureProps, OwnProps>(selector: Selector<FeaturePr
     (Component) => {
         const observerComponent = observer((ownProps: OwnProps) => {
             const features = useAllFeatures();
+            console.log('FEATURES: ', features);
             // const 
 
             const selectedProps = selector(features, ownProps);
             const allProps = {...ownProps, ...selectedProps} as any;
-            return createElement(Component, allProps);
+            return createElement(observer(Component), allProps);
          })
         type WrappedComponentProps = OwnProps & FeatureProps;
 

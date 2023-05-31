@@ -2,7 +2,7 @@ import { Footer } from './footer.component';
 import { createElement } from 'react';
 // import { useTaskManagerFeature } from '../../../DI/use-feature';
 import { observer } from 'mobx-react';
-import { useDIFeature } from '../../../DI/di-container';
+import { useDIFeature } from '../../../DI/use-feature';
 // import { withFeature } from '../../../DI/with-feature';
 
 // so it can be used either with simpler 'useFeature' or 'withFeature' hook

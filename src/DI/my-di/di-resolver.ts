@@ -3,6 +3,8 @@ import 'reflect-metadata'
 
 type Klass<Interface = any> = new (...args: any[]) => Interface
 
+const checkIfBrowser = () => (typeof globalThis.window === 'object');
+
 export const resolveDI = <T extends Klass[]>(classes: T) => {
   const constructors = new Map()
   const allKeys: string[] = []
@@ -47,7 +49,10 @@ export const resolveDI = <T extends Klass[]>(classes: T) => {
     const constructorKeys = Reflect.getMetadataKeys(
       klassConstructor,
     ).filter((item: string) => item.startsWith(INJECT_KEY))
-    constructorKeys.reverse()
+
+	if (!checkIfBrowser()) {
+    	constructorKeys.reverse()
+	}
 
     if (constructorKeys.length === 0) {
       const instance = new klassConstructor()
@@ -104,7 +109,10 @@ export class DIResolver<A, T extends Klass<A>[]> {
     const constructorKeys = Reflect.getMetadataKeys(klassConstructor)
       .filter((item: string) => item.startsWith(INJECT_KEY))
       .map((token) => Reflect.getMetadata(token, klassConstructor))
-    constructorKeys.reverse()
+	  if (!checkIfBrowser()) {
+    	constructorKeys.reverse()
+	}
+
 
     return constructorKeys
   }
@@ -200,51 +208,54 @@ export class DIResolver<A, T extends Klass<A>[]> {
 
 
 export class DIResolverWithKeysChecker<
-  A,
+  DependencyInterface,
   Key extends string,
-  T extends Record<Key, Klass<A>>
+  T extends Record<Key, Klass<DependencyInterface>>
 > {
   constructor(private readonly klasses: T) {}
 
   private allKeys: string[] = []
-  private constructors: Map<string, Klass<A>> = new Map()
-  private instancesContainer = new Map<string, A>()
+  private constructors: Map<string, Klass<DependencyInterface>> = new Map()
+  private instancesContainer = new Map<string, DependencyInterface>()
   private notFoundInjectKeys = new Set<string>()
 
   private removeKey = (keyIndex: number) => {
     this.allKeys.splice(keyIndex, 1)
   }
 
-  private addConstructorAndKeys = (key: string, klass: Klass<A>) => {
+  private addConstructorAndKeys = (key: string, klass: Klass<DependencyInterface>) => {
     // check the case when decorator is not added! may be throw an error
     const injectableKey = this.resolveInjectableKey(key, klass)
     this.constructors.set(injectableKey, klass)
     this.allKeys.push(injectableKey)
   }
 
-  private resolveInjectableKey = (key: string, klass: Klass<A>) => {
+  private resolveInjectableKey = (key: string, klass: Klass<DependencyInterface>) => {
     const injectableKey = Reflect.getMetadata(INJECTABLE_TOKEN_KEY, klass)
-	console.log('RESOLVED KEY: ', injectableKey);
     if (injectableKey !== key) {
       throw new Error(
-        `A key "${key}" provided to the class "${klass.name}" does not correspond to a key in @MakeInjectable decorator: "${injectableKey}".`,
+        `A key "${key}" provided to the class "${klass.name}" does not correspond to a key in @Inject decorator: "${injectableKey}".`,
       )
     }
 
     return injectableKey
   }
 
-  private getConstructorKeys = (klassConstructor: Klass<A>): string[] => {
+  private getConstructorKeys = (klassConstructor: Klass<DependencyInterface>): string[] => {
 	if (klassConstructor.name === 'TaskManagerFeatureImpl') {
 		console.log('ADDING TO WINDOW: ');
 		(window  as any)['TaskManagerFeatureImpl'] = klassConstructor
 	}
-	console.log('CONSTRUCTOR INITIAL KEYS: ',klassConstructor.name, Reflect.getMetadataKeys(klassConstructor));
-    const constructorKeys = Reflect.getMetadataKeys(klassConstructor)
+	console.log('CONSTRUCTOR INITIAL KEYS: ',klassConstructor.name, Reflect.getOwnMetadataKeys(klassConstructor));
+
+	console.log('OWN KEYS: ', [...Reflect.getMetadataKeys(klassConstructor)])
+    const constructorKeys = Reflect.getOwnMetadataKeys(klassConstructor)
       .filter((item: string) => item.startsWith(INJECT_KEY))
       .map((token) => Reflect.getMetadata(token, klassConstructor))
 
-    constructorKeys.reverse()
+	  if (!checkIfBrowser()) {
+    	constructorKeys.reverse()
+	}
 
     return constructorKeys
   }
@@ -252,7 +263,7 @@ export class DIResolverWithKeysChecker<
   private createInstanceWithoutParams = (
     key: string,
     keyIndex: number,
-    item: Klass<A>,
+    item: Klass<DependencyInterface>,
   ) => {
     const instance = new item()
     this.instancesContainer.set(key, instance)
@@ -317,6 +328,8 @@ export class DIResolverWithKeysChecker<
         }
       }
 
+	  console.log('ONSTANCES TO INJECT: ', instancesToInject, ...instancesToInject);
+	  console.log('CONSTRUCTOR ARGUMENTS: ', Reflect.getMetadataKeys(klassConstructor))
       const createdKlass = new klassConstructor(...instancesToInject)
       this.instancesContainer.set(klassKey, createdKlass)
       this.removeKey(i)

@@ -1,10 +1,9 @@
 export type ServiceDependencyKey = 'TaskService' | 'ErrorsStore' | 'TaskStore'
-export type FeatureDependencyKey = 'TaskManagerFeature' | 'TempFeature'
+export type FeatureDependencyKey = 'TaskManagerFeature'
 
-export const DependencyToken = {
-  TaskService: 'TaskService',
-  ErrorsStore: 'ErrorsStore',
-  TaskStore: 'TaskStore',
-  TaskManagerFeature: 'TaskManagerFeature',
-  TempFeature: 'TempFeature',
+export const Token = {
+  taskService: 'TaskService',
+  errorsStore: 'ErrorsStore',
+  taskStore: 'TaskStore',
+  taskManagerFeature: 'TaskManagerFeature',
 } as const

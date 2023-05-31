@@ -1,16 +1,10 @@
-import { makeAutoObservable } from "mobx";
-import { MakeInjectable } from "../../DI/my-di/decorators";
-import { DependencyToken } from "../../DI/tokens";
-import { type ErrorsStore } from "../../domain/feature-dependencies/stores/errors-store.dependency";
+import { Injectable } from '../../DI/my-di/decorators';
+import { Token } from '../../DI/tokens';
+import { type ErrorsStore } from '../../domain/feature-dependencies/stores/errors-store.dependency';
 
-@MakeInjectable(DependencyToken.ErrorsStore)
+@Injectable(Token.errorsStore)
 export class ErrorsStoreImpl implements ErrorsStore {
-
-    constructor() {
-        // makeAutoObservable(this);
-    }
-    
-    handleError = (key: string) => (error?: Error) => {
-        // doing something - e.g. saving for showing notification
-    }
+	handleError = (key: string) => (error?: Error) => {
+		// doing something - e.g. saving for showing notification
+	};
 }

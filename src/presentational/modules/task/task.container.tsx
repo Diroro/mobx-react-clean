@@ -1,7 +1,6 @@
 import { TaskComponent } from './task.component';
-// import { withFeature } from '../../../DI/with-feature';
 import { createElement } from 'react';
-import { useDIFeature } from '../../../DI/di-container';
+import { useDIFeature } from '../../../DI';
 import { observer } from 'mobx-react';
 import { type Task } from '../../../domain/models/task.model';
 
@@ -11,13 +10,12 @@ import { type Task } from '../../../domain/models/task.model';
 // }))(TaskComponent);
 
 
-
 export const TaskContainer = observer(({task}: {task: Task}) => {
-	const TaskManager = useDIFeature('TaskManagerFeature');
+	const taskManager = useDIFeature('TaskManagerFeature');
 
 	return createElement(TaskComponent, {
-		onCheck: TaskManager.toggleCompleteTask,
-		onDelete: TaskManager.removeTask,
+		onCheck: taskManager.toggleCompleteTask,
+		onDelete: taskManager.removeTask,
 		task,
 	});
 });

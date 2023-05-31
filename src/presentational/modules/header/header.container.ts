@@ -3,7 +3,8 @@ import { withFeature } from '../../../DI/with-feature';
 import { observer } from 'mobx-react';
 // import { useTaskManagerFeature } from '../../../DI/use-feature';
 import { createElement } from 'react';
-import { useDIFeature } from '../../../DI/di-container';
+import { useDIFeature } from '../../../DI/use-feature';
+// import { useDIFeature } from '../../../DI/di-container';
 
 export const HeaderContainer = observer(() => {
 	const {addTask} = useDIFeature('TaskManagerFeature');
