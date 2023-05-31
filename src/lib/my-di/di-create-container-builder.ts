@@ -73,7 +73,7 @@ type KlassBox<Box> = { [key in keyof Box]: Klass<Box[key]> }
 //   }
 // }
 
-export const buildContainer = <Box extends { [key: string]: unknown } = {}>(
+export const createContainerBuilder = <Box extends { [key: string]: unknown } = {}>(
   box: KlassBox<Box> = {} as KlassBox<Box>,
 ): ContainerBuilder<Box> => {
   const bind = <Key extends string, T>(
@@ -81,7 +81,7 @@ export const buildContainer = <Box extends { [key: string]: unknown } = {}>(
     value: Klass<T>,
   ): ContainerBuilder<Box & Record<Key, T>> => {
     const newBox = { ...box, [key]: value } as KlassBox<Box & Record<Key, T>>
-    return buildContainer(newBox)
+    return createContainerBuilder(newBox)
   }
 
   const build = (

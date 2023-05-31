@@ -40,13 +40,6 @@ export class DIResolverWithKeysChecker<
   }
 
   private getConstructorKeys = (klassConstructor: Klass<DependencyInterface>): string[] => {
-	if (klassConstructor.name === 'TaskManagerFeatureImpl') {
-		console.log('ADDING TO WINDOW: ');
-		(window  as any)['TaskManagerFeatureImpl'] = klassConstructor
-	}
-	console.log('CONSTRUCTOR INITIAL KEYS: ',klassConstructor.name, Reflect.getOwnMetadataKeys(klassConstructor));
-
-	console.log('OWN KEYS: ', [...Reflect.getMetadataKeys(klassConstructor)])
     const constructorKeys = Reflect.getOwnMetadataKeys(klassConstructor)
       .filter((item: string) => item.startsWith(INJECT_KEY))
       .map((token) => Reflect.getMetadata(token, klassConstructor))
@@ -100,7 +93,6 @@ export class DIResolverWithKeysChecker<
       }
       const constructorKeys = this.getConstructorKeys(klassConstructor)
 
-	  console.log('CONSTRUCTOR KEYS: ', constructorKeys);
       if (constructorKeys.length === 0) {
         this.createInstanceWithoutParams(klassKey, i, klassConstructor)
         // we are going to the next constructor
@@ -126,8 +118,6 @@ export class DIResolverWithKeysChecker<
         }
       }
 
-	  console.log('ONSTANCES TO INJECT: ', instancesToInject, ...instancesToInject);
-	  console.log('CONSTRUCTOR ARGUMENTS: ', Reflect.getMetadataKeys(klassConstructor))
       const createdKlass = new klassConstructor(...instancesToInject)
       this.instancesContainer.set(klassKey, createdKlass)
       this.removeKey(i)

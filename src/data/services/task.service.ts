@@ -3,7 +3,7 @@ import {type  TaskService } from "../../domain/feature-dependencies/services/tas
 import { createTask, type TaskApiModel } from "../api-models/task.api-model";
 import {v4 as uuidv4} from 'uuid';
 // import { type ApiClient } from "./api.client";
-import { Injectable } from "../../DI/my-di/decorators";
+import { Injectable } from "../../lib/my-di";
 import { Token } from "../../DI/tokens";
 
 let mockTasksList: TaskApiModel[] = [

@@ -5,7 +5,7 @@ import { type TaskService } from "../feature-dependencies/services/task.service.
 import { type ErrorsStore } from "../feature-dependencies/stores/errors-store.dependency";
 import { type TaskStore } from "../feature-dependencies/stores/task-store.dependency";
 import { type Cancellable, handleRequest } from "../../utils/handle-request.utils";
-import { Injectable, Inject } from "../../DI/my-di/decorators";
+import { Injectable, Inject } from "../../lib/my-di";
 
 export interface TaskManagerFeature {
     tasksList: Task[];

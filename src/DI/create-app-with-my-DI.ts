@@ -12,8 +12,7 @@ import {
 } from '../domain/features/task-manager.feature';
 
 import { Token, FeatureDependencyKey } from './tokens';
-import { buildContainer } from './my-di';
-import 'reflect-metadata';
+import { buildContainer } from '../lib/my-di';
 
 export const createApp = () => {
 	const container = buildContainer()

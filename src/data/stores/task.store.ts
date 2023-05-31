@@ -1,6 +1,6 @@
 import type { Task, TaskId } from '../../domain/models/task.model';
 import { type TaskStore } from '../../domain/feature-dependencies/stores/task-store.dependency';
-import { Injectable } from '../../DI/my-di/decorators';
+import { Injectable } from '../../lib/my-di';
 import { Token } from '../../DI/tokens';
 
 @Injectable(Token.taskStore)
